@@ -52,7 +52,7 @@ class ImageSlider @JvmOverloads constructor(
     private var placeholder = 0
     private var titleBackground = 0
     private var textAlign = "LEFT"
-    private var indicatorAlign = "CENTER"
+    private var indicatorAlign = "LEFT"
     private var swipeTimer = Timer()
 
     private var itemChangeListener: ItemChangeListener? = null
@@ -74,21 +74,32 @@ class ImageSlider @JvmOverloads constructor(
         period = typedArray.getInt(R.styleable.ImageSlider_iss_period, 1000).toLong()
         delay = typedArray.getInt(R.styleable.ImageSlider_iss_delay, 1000).toLong()
         autoCycle = typedArray.getBoolean(R.styleable.ImageSlider_iss_auto_cycle, false)
-        placeholder = typedArray.getResourceId(R.styleable.ImageSlider_iss_placeholder, R.drawable.loading)
-        errorImage = typedArray.getResourceId(R.styleable.ImageSlider_iss_error_image, R.drawable.error)
-        selectedDot = typedArray.getResourceId(R.styleable.ImageSlider_iss_selected_dot, R.drawable.default_selected_dot)
-        unselectedDot = typedArray.getResourceId(R.styleable.ImageSlider_iss_unselected_dot, R.drawable.default_unselected_dot)
-        titleBackground = typedArray.getResourceId(R.styleable.ImageSlider_iss_title_background, R.drawable.gradient)
+        placeholder =
+            typedArray.getResourceId(R.styleable.ImageSlider_iss_placeholder, R.drawable.loading)
+        errorImage =
+            typedArray.getResourceId(R.styleable.ImageSlider_iss_error_image, R.drawable.error)
+        selectedDot = typedArray.getResourceId(
+            R.styleable.ImageSlider_iss_selected_dot,
+            R.drawable.default_selected_dot
+        )
+        unselectedDot = typedArray.getResourceId(
+            R.styleable.ImageSlider_iss_unselected_dot,
+            R.drawable.default_unselected_dot
+        )
+        titleBackground = typedArray.getResourceId(
+            R.styleable.ImageSlider_iss_title_background,
+            R.drawable.gradient
+        )
 
-        if (typedArray.getString(R.styleable.ImageSlider_iss_text_align) != null){
+        if (typedArray.getString(R.styleable.ImageSlider_iss_text_align) != null) {
             textAlign = typedArray.getString(R.styleable.ImageSlider_iss_text_align)
         }
 
-        if (typedArray.getString(R.styleable.ImageSlider_iss_indicator_align) != null){
+        if (typedArray.getString(R.styleable.ImageSlider_iss_indicator_align) != null) {
             indicatorAlign = typedArray.getString(R.styleable.ImageSlider_iss_indicator_align)
         }
 
-        if (touchListener != null){
+        if (touchListener != null) {
             viewPager!!.setOnTouchListener { v, event ->
                 when (event.action) {
                     MotionEvent.ACTION_MOVE -> touchListener!!.onTouched(ActionTypes.MOVE)
@@ -107,10 +118,18 @@ class ImageSlider @JvmOverloads constructor(
      * @param  imageList  the image list by user
      */
     fun setImageList(imageList: List<SlideModel>) {
-        viewPagerAdapter = ViewPagerAdapter( context, imageList, cornerRadius, errorImage, placeholder, titleBackground, textAlign)
+        viewPagerAdapter = ViewPagerAdapter(
+            context,
+            imageList,
+            cornerRadius,
+            errorImage,
+            placeholder,
+            titleBackground,
+            textAlign
+        )
         viewPager!!.adapter = viewPagerAdapter
         imageCount = imageList.size
-        if (imageList.isNotEmpty()){
+        if (imageList.isNotEmpty()) {
             setupDots(imageList.size)
             if (autoCycle) {
                 stopSliding()
@@ -126,10 +145,19 @@ class ImageSlider @JvmOverloads constructor(
      * @param  scaleType  scale type for all image
      */
     fun setImageList(imageList: List<SlideModel>, scaleType: ScaleTypes? = null) {
-        viewPagerAdapter = ViewPagerAdapter( context, imageList, cornerRadius, errorImage, placeholder, titleBackground, scaleType, textAlign)
+        viewPagerAdapter = ViewPagerAdapter(
+            context,
+            imageList,
+            cornerRadius,
+            errorImage,
+            placeholder,
+            titleBackground,
+            scaleType,
+            textAlign
+        )
         viewPager!!.adapter = viewPagerAdapter
         imageCount = imageList.size
-        if (imageList.isNotEmpty()){
+        if (imageList.isNotEmpty()) {
             setupDots(imageList.size)
             if (autoCycle) {
                 startSliding()
@@ -150,6 +178,7 @@ class ImageSlider @JvmOverloads constructor(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
+
             params.setMargins(8, 0, 8, 0)
             pagerDots!!.addView(dots!![i], params)
         }
@@ -192,7 +221,7 @@ class ImageSlider @JvmOverloads constructor(
      * Stop image sliding.
      *
      */
-    fun stopSliding(){
+    fun stopSliding() {
         swipeTimer.cancel()
         swipeTimer.purge()
     }
@@ -250,10 +279,10 @@ class ImageSlider @JvmOverloads constructor(
     fun getGravityFromAlign(textAlign: String): Int {
         return when (textAlign) {
             "RIGHT" -> {
-                Gravity.RIGHT
+                Gravity.END
             }
             "LEFT" -> {
-                Gravity.LEFT
+                Gravity.START
             }
             else -> {
                 Gravity.CENTER
