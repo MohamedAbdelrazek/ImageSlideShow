@@ -166,10 +166,14 @@ class ImageSlider @JvmOverloads constructor(
     }
 
     private fun setupDots(size: Int) {
+        if (size == 1) {
+            return
+        }
         println(indicatorAlign)
         pagerDots!!.gravity = getGravityFromAlign(indicatorAlign)
         pagerDots!!.removeAllViews()
         dots = arrayOfNulls(size)
+
 
         for (i in 0 until size) {
             dots!![i] = ImageView(context)
